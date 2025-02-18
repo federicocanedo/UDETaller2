@@ -3,7 +3,7 @@ version: 2.1
 executors:
   java-executor:
     docker:
-      - image: circleci/openjdk:19.0
+      - image: cimg/openjdk:19.0
 
 jobs:
   checkstyle:
