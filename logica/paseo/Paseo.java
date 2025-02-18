@@ -10,7 +10,11 @@ public class Paseo implements Serializable {
     private LocalTime horaPartida;
     private LocalTime horaLlegada;
     private int precioBase;
-    private int cantMaxBoletos;
+
+    public Boletos getBoletos() { return boletos; }
+
+    public void setBoletos(Boletos boletos) { this.boletos = boletos; }
+
     private Boletos boletos;
 
     public Paseo(VOPaseo vo) {
