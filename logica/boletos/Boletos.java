@@ -1,5 +1,6 @@
 package logica.boletos;
 
+import logica.exception.EntidadNoExisteException;
 import logica.exception.EntidadYaExisteException;
 
 import java.util.ArrayList;
@@ -15,18 +16,27 @@ public class Boletos extends ArrayList<Boleto> {
         return null;
     }
 
-    public void agregarBoleto(Boleto boleto) {
+    public void agregarBoleto(VOBoleto boleto) {
         if (buscarBoleto(boleto.getId()) != null) {
             throw new EntidadYaExisteException("El boleto ya existe");
         }
-        add(boleto);
+        add(new Boleto(boleto));
     }
 
     public void eliminarBoleto(int id) {
         Boleto boleto = buscarBoleto(id);
         if (boleto == null) {
-            throw new RuntimeException("El boleto no existe");
+            throw new EntidadNoExisteException("El boleto no existe");
         }
         remove(boleto);
+    }
+
+    public VOBoleto[] listarBoletos() {
+        VOBoleto[] voBoletos = new VOBoleto[size()];
+        int index = 0;
+        for (Boleto boleto : this) {
+            voBoletos[index++] = boleto.getVO();
+        }
+        return voBoletos;
     }
 }

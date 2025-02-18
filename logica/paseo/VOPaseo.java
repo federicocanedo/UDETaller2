@@ -9,22 +9,19 @@ public class VOPaseo implements Serializable {
     private LocalTime horaPartida;
     private LocalTime horaLlegada;
     private int precioBase;
-    private int cantMaxBoletos;
 
     public VOPaseo(
         String id,
         String destino,
         LocalTime horaPartida,
         LocalTime horaLlegada,
-        int precioBase,
-        int cantMaxBoletos
+        int precioBase
     ) {
         this.id = id;
         this.destino = destino;
         this.horaPartida = horaPartida;
         this.horaLlegada = horaLlegada;
         this.precioBase = precioBase;
-        this.cantMaxBoletos = cantMaxBoletos;
     }
 
     public String getId() {
@@ -65,13 +62,5 @@ public class VOPaseo implements Serializable {
 
     public void setPrecioBase(int precioBase) {
         this.precioBase = precioBase;
-    }
-
-    public int getCantMaxBoletos() {
-        return cantMaxBoletos;
-    }
-
-    public void setCantMaxBoletos(int cantMaxBoletos) {
-        this.cantMaxBoletos = cantMaxBoletos;
     }
 }

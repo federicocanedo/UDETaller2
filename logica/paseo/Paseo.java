@@ -13,20 +13,12 @@ public class Paseo implements Serializable {
     private int cantMaxBoletos;
     private Boletos boletos;
 
-    public Paseo(
-            String id,
-            String destino,
-            LocalTime horaPartida,
-            LocalTime horaLlegada,
-            int precioBase,
-            int cantMaxBoletos
-    ) {
-        this.id = id;
-        this.destino = destino;
-        this.horaPartida = horaPartida;
-        this.horaLlegada = horaLlegada;
-        this.precioBase = precioBase;
-        this.cantMaxBoletos = cantMaxBoletos;
+    public Paseo(VOPaseo vo) {
+        this.id = vo.getId();
+        this.destino = vo.getDestino();
+        this.horaPartida = vo.getHoraPartida();
+        this.horaLlegada = vo.getHoraLlegada();
+        this.precioBase = vo.getPrecioBase();
         this.boletos = new Boletos();
     }
 
@@ -70,22 +62,13 @@ public class Paseo implements Serializable {
         this.precioBase = precioBase;
     }
 
-    public int getCantMaxBoletos() {
-        return cantMaxBoletos;
-    }
-
-    public void setCantMaxBoletos(int cantMaxBoletos) {
-        this.cantMaxBoletos = cantMaxBoletos;
-    }
-
     public VOPaseo getVO() {
         return new VOPaseo(
             this.id,
             this.destino,
             this.horaPartida,
             this.horaLlegada,
-            this.precioBase,
-            this.cantMaxBoletos
+            this.precioBase
         );
     }
 }
