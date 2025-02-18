@@ -1,0 +1,36 @@
+version: 2.1
+
+executors:
+  java-executor:
+    docker:
+      - image: circleci/openjdk:19.0.2
+
+jobs:
+  checkstyle:
+    executor: java-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Checkstyle
+          command: |
+            curl -LJO https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.5.0/checkstyle-10.5.0-all.jar
+      - run:
+          name: Run Checkstyle
+          command: |
+            java -jar checkstyle-10.5.0-all.jar -c /google_checks.xml src
+
+  compile:
+    executor: java-executor
+    steps:
+      - checkout
+      - run:
+          name: Compile Java
+          command: |
+            javac src/**/*.java
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkstyle
+      - compile
