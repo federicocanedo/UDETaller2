@@ -7,26 +7,11 @@ import java.util.TreeMap;
 
 public class Paseos extends TreeMap<String, Paseo> {
 
-    public void insertarPaseo(
-            String id,
-            String destino,
-            LocalTime horaPartida,
-            LocalTime horaLlegada,
-            int precioBase,
-            int cantMaxBoletos
-    ) throws EntidadYaExisteException {
-        if (this.containsKey(id)) {
-            throw new EntidadYaExisteException("Paseo with id " + id + " already exists.");
-        }
-        Paseo paseo = new Paseo(id, destino, horaPartida, horaLlegada, precioBase, cantMaxBoletos);
-        this.put(id, paseo);
-    }
-
-    public void insertarPaseo(Paseo paseo) throws EntidadYaExisteException {
+    public void insertarPaseo(VOPaseo paseo) throws EntidadYaExisteException {
         if (this.containsKey(paseo.getId())) {
             throw new EntidadYaExisteException("Paseo with id " + paseo.getId() + " already exists.");
         }
-        this.put(paseo.getId(), paseo);
+        this.put(paseo.getId(), new Paseo(paseo));
     }
 
     public VOPaseo[] listarPaseos() {
