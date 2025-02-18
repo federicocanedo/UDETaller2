@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class VOMinivan implements Serializable {
     private String matricula;
     private int capacidad;
+    private String marca;
 
-    public VOMinivan(String matricula, int capacidad) {
+    public VOMinivan(String matricula, int capacidad, String marca) {
         this.matricula = matricula;
         this.capacidad = capacidad;
+        this.marca = marca;
     }
 
     public String getMatricula() {
@@ -17,6 +19,14 @@ public class VOMinivan implements Serializable {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     public int getCapacidad() {
