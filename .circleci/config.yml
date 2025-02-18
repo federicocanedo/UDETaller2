@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Run Checkstyle
           command: |
-            java -jar checkstyle-10.5.0-all.jar -c /google_checks.xml src
+            java -jar checkstyle-10.5.0-all.jar -c /google_checks.xml .
 
   compile:
     executor: java-executor
@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Compile Java
           command: |
-            javac src/**/*.java
+            javac *.java
 
 workflows:
   version: 2
