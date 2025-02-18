@@ -42,9 +42,9 @@ public class Principal {
         }
 
         try {
-            VOMinivan voMinivan1 = new VOMinivan("ABC123", 7);
+            VOMinivan voMinivan1 = new VOMinivan("ABC123", 7, "RolsRoice");
             minivans.insertarMinivan(voMinivan1);
-            VOMinivan voMinivan2 = new VOMinivan("XYZ789", 9);
+            VOMinivan voMinivan2 = new VOMinivan("XYZ789", 9, "RolsRoice");
             minivans.insertarMinivan(voMinivan2);
         } catch (EntidadYaExisteException e) {
             System.out.println(e.getMessage());
