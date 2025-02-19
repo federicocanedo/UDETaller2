@@ -20,6 +20,7 @@ public class Principal {
                     "Playa del Cerro",
                     LocalTime.of(9, 0),
                     LocalTime.of(12, 0),
+                    100, /// ACA ESTOY AGREGANDO CANTBOLETOSMAX?
                     100
             );
             paseos.insertarPaseo(voPaseo1);
@@ -29,6 +30,7 @@ public class Principal {
                     "Casavalle",
                     LocalTime.of(10, 0),
                     LocalTime.of(14, 0),
+                    102, /// ACA ESTOY AGREGANDO CANTBOLETOSMAX?
                     150
             );
             paseos.insertarPaseo(voPaseo2);

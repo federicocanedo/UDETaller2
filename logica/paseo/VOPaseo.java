@@ -7,20 +7,24 @@ public class VOPaseo implements Serializable {
     private String id;
     private String destino;
     private LocalTime horaPartida;
-    private LocalTime horaLlegada;
+    private LocalTime horaRegreso;
+    private int CantMaxBoletos;
+    //// AGREGAR BOLETO --> COMO HACER HERENCIA ACA
     private int precioBase;
 
     public VOPaseo(
         String id,
         String destino,
         LocalTime horaPartida,
-        LocalTime horaLlegada,
+        LocalTime horaRegreso,
+        int CantMaxBoletos,
         int precioBase
     ) {
         this.id = id;
         this.destino = destino;
         this.horaPartida = horaPartida;
-        this.horaLlegada = horaLlegada;
+        this.horaRegreso = horaRegreso;
+        this.CantMaxBoletos = CantMaxBoletos;
         this.precioBase = precioBase;
     }
 
@@ -48,12 +52,20 @@ public class VOPaseo implements Serializable {
         this.horaPartida = horaPartida;
     }
 
-    public LocalTime getHoraLlegada() {
-        return horaLlegada;
+    public LocalTime getHoraRegreso() {
+        return horaRegreso;
     }
 
-    public void setHoraLlegada(LocalTime horaLlegada) {
-        this.horaLlegada = horaLlegada;
+    public void sethoraRegreso(LocalTime horaRegreso) {
+        this.horaRegreso = horaRegreso;
+    }
+    
+    public int getCantMaxBoletos() {
+        return CantMaxBoletos;
+    }
+
+    public void CantMaxBoletos(int CantMaxBoletos) {
+        this.CantMaxBoletos = CantMaxBoletos;
     }
 
     public int getPrecioBase() {
