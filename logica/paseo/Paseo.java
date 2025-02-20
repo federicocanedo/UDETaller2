@@ -10,7 +10,6 @@ public class Paseo implements Serializable {
     private LocalTime horaPartida;
     private LocalTime horaRegreso;
     private int CantMaxBoletos;
-    //// AGREGAR BOLETO --> COMO HACER HERENCIA ACA
     private int precioBase;
 
 

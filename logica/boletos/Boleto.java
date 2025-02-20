@@ -16,6 +16,13 @@ public class Boleto implements Serializable {
         this.p_edad = vo.getP_edad();
         this.p_numCelular = vo.getP_numCelular();
     }
+    public Boleto(int id, String p_nombre, int p_edad, String p_numCelular) { /// ESTO PARA RECIBIR BOLETO EN BOLETOESPECIAL
+        this.id = id;
+        this.p_nombre = p_nombre;
+        this.p_edad = p_edad;
+        this.p_numCelular = p_numCelular;
+    }
+
 
     public int getId() {
         return id;

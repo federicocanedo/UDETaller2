@@ -44,7 +44,7 @@ public class Principal {
         }
 
         try {
-            VOMinivan voMinivan1 = new VOMinivan("ABC123", 7, "RolsRoice");
+            VOMinivan voMinivan1 = new VOMinivan("BAD2d", "RolsRoice", "BMW", 7);
             minivans.insertarMinivan(voMinivan1);
             VOMinivan voMinivan2 = new VOMinivan("XYZ789", 9, "RolsRoice");
             minivans.insertarMinivan(voMinivan2);
