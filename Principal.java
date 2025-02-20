@@ -1,13 +1,9 @@
-import logica.exception.EntidadYaExisteException;
-import logica.exception.PersistenciaException;
 import logica.minivan.Minivan;
-import logica.minivan.Minivans;
 import logica.minivan.VOMinivan;
-import logica.paseo.Paseos;
 import logica.paseo.VOPaseo;
-import persistencia.*;
-
-import java.time.LocalTime;
+import logica.exception.EntidadYaExisteException;
+import logica.minivan.Minivans; // El diccionario de minivans que vamos a utilizar
+import java.util.Map;
 
 public class Principal {
     public static void main(String[] args) {
@@ -82,12 +78,5 @@ public class Principal {
 
     public VORespaldo recuperarDatos() {
         Persistencia persistencia = new Persistencia();
-
-        try {
-            return persistencia.recuperar("respaldo.dat");
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
     }
 }

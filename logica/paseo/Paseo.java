@@ -9,15 +9,12 @@ public class Paseo implements Serializable {
     private String destino;
     private LocalTime horaPartida;
     private LocalTime horaRegreso;
-    private int CantMaxBoletos;
-    //// AGREGAR BOLETO --> COMO HACER HERENCIA ACA
     private int precioBase;
 
-
+  
     public Boletos getBoletos() { return boletos; }
 
     public void setBoletos(Boletos boletos) { this.boletos = boletos; }
-
     private Boletos boletos;
 
     public Paseo(VOPaseo vo) {
@@ -26,30 +23,28 @@ public class Paseo implements Serializable {
         this.horaPartida = vo.getHoraPartida();
         this.horaRegreso = vo.getHoraRegreso();
         this.precioBase = vo.getPrecioBase();
-        this.CantMaxBoletos = vo.getCantMaxBoletos();
+        this.cantMaxBoletos = vo.getCantMaxBoletos();
         this.boletos = new Boletos();
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getDestino() { return destino; }
+    public void setDestino(String destino) { this.destino = destino; }
 
-    public String getDestino() {
-        return destino;
-    }
+    public LocalTime getHoraPartida() { return horaPartida; }
+    public void setHoraPartida(LocalTime horaPartida) { this.horaPartida = horaPartida; }
 
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
+    public LocalTime getHoraLlegada() { return horaLlegada; }
+    public void setHoraLlegada(LocalTime horaLlegada) { this.horaLlegada = horaLlegada; }
 
-    public LocalTime getHoraPartida() {
-        return horaPartida;
-    }
+    public int getPrecioBase() { return precioBase; }
+    public void setPrecioBase(int precioBase) { this.precioBase = precioBase; }
 
+
+    public Boletos getBoletos() { return boletos; }
+    public void setBoletos(Boletos boletos) { this.boletos = boletos; }
     public void setHoraPartida(LocalTime horaPartida) {
         this.horaPartida = horaPartida;
     }
@@ -58,7 +53,7 @@ public class Paseo implements Serializable {
         return horaRegreso;
     }
 
-    public void sethoraRegreso(LocalTime horaRegreso) {
+    public void setHoraRegreso(LocalTime horaRegreso) {
         this.horaRegreso = horaRegreso;
     }
 
@@ -83,9 +78,9 @@ public class Paseo implements Serializable {
             this.id,
             this.destino,
             this.horaPartida,
-            this.horaRegreso,
+            this.horaLlegada,
             this.precioBase,
-            this.CantMaxBoletos
+            this.cantMaxBoletos
         );
     }
 }
