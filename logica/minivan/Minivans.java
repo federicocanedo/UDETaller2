@@ -1,28 +1,45 @@
 package logica.minivan;
 
-import java.util.TreeMap;
 import logica.exception.EntidadYaExisteException;
+import java.util.TreeMap;
 
-public class Minivans extends TreeMap<String, Minivan> {
+public class Minivans {
+    private TreeMap<String, Minivan> minivans;
 
-    public void insertarMinivan(VOMinivan minivan) throws EntidadYaExisteException {
-        if (this.containsKey(minivan.getMatricula())) {
-            throw new EntidadYaExisteException("La minivan con matrícula " + minivan.getMatricula() + " ya existe.");
+    public Minivans() {
+        this.minivans = new TreeMap<>();
+    }
+
+    public void insertarMinivan(VOMinivan voMinivan) throws EntidadYaExisteException {
+        String matricula = voMinivan.getMatricula();
+        if (minivans.containsKey(matricula)) {
+            throw new EntidadYaExisteException("La minivan con matrícula " + matricula + " ya existe.");
         }
-        this.put(minivan.getMatricula(), new Minivan(minivan));
+        minivans.put(matricula, new Minivan(voMinivan));
     }
 
     public VOMinivan[] listarMinivans() {
-        int size = this.size();
-        VOMinivan[] voMinivans = new VOMinivan[size];
-        int index = 0;
-        for (Minivan minivan : this.values()) {
-            voMinivans[index++] = minivan.getVO();
-        }
-        return voMinivans;
+        return minivans.values().stream()
+                .map(Minivan::getVO)
+                .toArray(VOMinivan[]::new);
     }
 
     public Minivan buscarMinivan(String matricula) {
-        return this.get(matricula);
+        return minivans.get(matricula);
     }
+
+	public void put(String matricula, Minivan nuevaMinivan) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean containsKey(String matricula) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Minivan get(String matricula) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

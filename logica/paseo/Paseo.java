@@ -10,11 +10,6 @@ public class Paseo implements Serializable {
     private LocalTime horaPartida;
     private LocalTime horaLlegada;
     private int precioBase;
-
-    public Boletos getBoletos() { return boletos; }
-
-    public void setBoletos(Boletos boletos) { this.boletos = boletos; }
-
     private Boletos boletos;
 
     public Paseo(VOPaseo vo) {
@@ -26,45 +21,23 @@ public class Paseo implements Serializable {
         this.boletos = new Boletos();
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getDestino() { return destino; }
+    public void setDestino(String destino) { this.destino = destino; }
 
-    public String getDestino() {
-        return destino;
-    }
+    public LocalTime getHoraPartida() { return horaPartida; }
+    public void setHoraPartida(LocalTime horaPartida) { this.horaPartida = horaPartida; }
 
-    public void setDestino(String destino) {
-        this.destino = destino;
-    }
+    public LocalTime getHoraLlegada() { return horaLlegada; }
+    public void setHoraLlegada(LocalTime horaLlegada) { this.horaLlegada = horaLlegada; }
 
-    public LocalTime getHoraPartida() {
-        return horaPartida;
-    }
+    public int getPrecioBase() { return precioBase; }
+    public void setPrecioBase(int precioBase) { this.precioBase = precioBase; }
 
-    public void setHoraPartida(LocalTime horaPartida) {
-        this.horaPartida = horaPartida;
-    }
-
-    public LocalTime getHoraLlegada() {
-        return horaLlegada;
-    }
-
-    public void setHoraLlegada(LocalTime horaLlegada) {
-        this.horaLlegada = horaLlegada;
-    }
-
-    public int getPrecioBase() {
-        return precioBase;
-    }
-
-    public void setPrecioBase(int precioBase) {
-        this.precioBase = precioBase;
-    }
+    public Boletos getBoletos() { return boletos; }
+    public void setBoletos(Boletos boletos) { this.boletos = boletos; }
 
     public VOPaseo getVO() {
         return new VOPaseo(
@@ -72,6 +45,7 @@ public class Paseo implements Serializable {
             this.destino,
             this.horaPartida,
             this.horaLlegada,
+            0,  // falta el número de boletos 
             this.precioBase
         );
     }

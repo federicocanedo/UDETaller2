@@ -7,6 +7,8 @@ public class Boleto implements Serializable {
     private String p_nombre;
     private int p_edad;
     private String p_numCelular;
+    
+/// CREAR UN NUEVO OBJETO BOLETO ESPECIAL????
 
     public Boleto(VOBoleto vo) {
         this.id = vo.getId();
@@ -14,6 +16,13 @@ public class Boleto implements Serializable {
         this.p_edad = vo.getP_edad();
         this.p_numCelular = vo.getP_numCelular();
     }
+    public Boleto(int id, String p_nombre, int p_edad, String p_numCelular) { /// ESTO PARA RECIBIR BOLETO EN BOLETOESPECIAL
+        this.id = id;
+        this.p_nombre = p_nombre;
+        this.p_edad = p_edad;
+        this.p_numCelular = p_numCelular;
+    }
+
 
     public int getId() {
         return id;
