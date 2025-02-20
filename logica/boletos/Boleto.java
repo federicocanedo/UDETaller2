@@ -7,6 +7,8 @@ public class Boleto implements Serializable {
     private String p_nombre;
     private int p_edad;
     private String p_numCelular;
+    
+/// CREAR UN NUEVO OBJETO BOLETO ESPECIAL????
 
     public Boleto(VOBoleto vo) {
         this.id = vo.getId();
