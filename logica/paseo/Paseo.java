@@ -8,16 +8,22 @@ public class Paseo implements Serializable {
     private String id;
     private String destino;
     private LocalTime horaPartida;
-    private LocalTime horaLlegada;
+    private LocalTime horaRegreso;
     private int precioBase;
+
+  
+    public Boletos getBoletos() { return boletos; }
+
+    public void setBoletos(Boletos boletos) { this.boletos = boletos; }
     private Boletos boletos;
 
     public Paseo(VOPaseo vo) {
         this.id = vo.getId();
         this.destino = vo.getDestino();
         this.horaPartida = vo.getHoraPartida();
-        this.horaLlegada = vo.getHoraLlegada();
+        this.horaRegreso = vo.getHoraRegreso();
         this.precioBase = vo.getPrecioBase();
+        this.cantMaxBoletos = vo.getCantMaxBoletos();
         this.boletos = new Boletos();
     }
 
@@ -36,8 +42,36 @@ public class Paseo implements Serializable {
     public int getPrecioBase() { return precioBase; }
     public void setPrecioBase(int precioBase) { this.precioBase = precioBase; }
 
+
     public Boletos getBoletos() { return boletos; }
     public void setBoletos(Boletos boletos) { this.boletos = boletos; }
+    public void setHoraPartida(LocalTime horaPartida) {
+        this.horaPartida = horaPartida;
+    }
+
+    public LocalTime getHoraRegreso() {
+        return horaRegreso;
+    }
+
+    public void setHoraRegreso(LocalTime horaRegreso) {
+        this.horaRegreso = horaRegreso;
+    }
+
+    public int getPrecioBase() {
+        return precioBase;
+    }
+
+    public void setPrecioBase(int precioBase) {
+        this.precioBase = precioBase;
+    }
+    
+    public int getCantMaxBoletos() {
+        return CantMaxBoletos;
+    }
+
+    public void serCantMaxBoletos(int CantMaxBoletos) {
+        this.CantMaxBoletos = CantMaxBoletos;
+    }
 
     public VOPaseo getVO() {
         return new VOPaseo(
@@ -45,8 +79,8 @@ public class Paseo implements Serializable {
             this.destino,
             this.horaPartida,
             this.horaLlegada,
-            0,  // falta el número de boletos 
-            this.precioBase
+            this.precioBase,
+            this.cantMaxBoletos
         );
     }
 }

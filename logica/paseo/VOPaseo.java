@@ -43,5 +43,30 @@ public class VOPaseo implements Serializable {
     public void setCantMaxBoletos(int cantMaxBoletos) { this.cantMaxBoletos = cantMaxBoletos; }  
 
     public int getPrecioBase() { return precioBase; }
+  
     public void setPrecioBase(int precioBase) { this.precioBase = precioBase; }
+  
+    public LocalTime getHoraRegreso() {
+        return horaRegreso;
+    }
+
+    public void sethoraRegreso(LocalTime horaRegreso) {
+        this.horaRegreso = horaRegreso;
+    }
+    
+    public int getCantMaxBoletos() {
+        return CantMaxBoletos;
+    }
+
+    public void CantMaxBoletos(int CantMaxBoletos) {
+        this.CantMaxBoletos = CantMaxBoletos;
+    }
+
+    public int getPrecioBase() {
+        return precioBase;
+    }
+
+    public void setPrecioBase(int precioBase) {
+        this.precioBase = precioBase;
+    }
 }
