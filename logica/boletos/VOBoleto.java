@@ -1,19 +1,21 @@
 package logica.boletos;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class VOBoleto implements Serializable {
     private int id;
     private String p_nombre;
     private int p_edad;
     private String p_numCelular;
+    private BoletoEspecial boletoEspecial;  // Renombrado para claridad
 
-    public VOBoleto(int id, String p_nombre, int p_edad, String p_numCelular) {
+
+    public VOBoleto(int id, String p_nombre, int p_edad, String p_numCelular, BoletoEspecial boletoEspecial) {
         this.id = id;
         this.p_nombre = p_nombre;
         this.p_edad = p_edad;
         this.p_numCelular = p_numCelular;
+        this.boletoEspecial = boletoEspecial;
     }
 
     public int getId() {
@@ -46,5 +48,13 @@ public class VOBoleto implements Serializable {
 
     public void setP_numCelular(String p_numCelular) {
         this.p_numCelular = p_numCelular;
+    }
+
+    public BoletoEspecial getBoletoEspecial() {
+        return boletoEspecial;
+    }
+
+    public void setBoletoEspecial(BoletoEspecial boletoEspecial) {
+        this.boletoEspecial = boletoEspecial;
     }
 }

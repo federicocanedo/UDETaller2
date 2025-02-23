@@ -7,17 +7,28 @@ public class Boleto implements Serializable {
     private String p_nombre;
     private int p_edad;
     private String p_numCelular;
+    private BoletoEspecial BoletoEspecial;
     
 /// CREAR UN NUEVO OBJETO BOLETO ESPECIAL????
+
 
     public Boleto(VOBoleto vo) {
         this.id = vo.getId();
         this.p_nombre = vo.getP_nombre();
         this.p_edad = vo.getP_edad();
         this.p_numCelular = vo.getP_numCelular();
+        this.BoletoEspecial = vo.getBoletoEspecial();
     }
 
-    public int getId() {
+    public Boleto(int id2, String p_nombre2, int p_edad2, String p_numCelular2) {
+        this.id = id2;
+        this.p_nombre = p_nombre2;
+        this.p_edad = p_edad2;
+        this.p_numCelular = p_numCelular2;
+        this.BoletoEspecial = null; // Inicialmente no hay boleto especial
+    }
+
+	public int getId() {
         return id;
     }
 
@@ -54,7 +65,16 @@ public class Boleto implements Serializable {
             this.id,
             this.p_nombre,
             this.p_edad,
-            this.p_numCelular
+            this.p_numCelular,
+            this.BoletoEspecial
         );
     }
+
+	public BoletoEspecial getBoletoEspecial() {
+		return BoletoEspecial;
+	}
+
+	public void setBoletoEspecial(BoletoEspecial boletoEspecial) {
+		BoletoEspecial = boletoEspecial;
+	}
 }

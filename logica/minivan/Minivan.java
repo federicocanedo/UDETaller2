@@ -1,61 +1,65 @@
 package logica.minivan;
 
-import logica.paseo.Paseos;
+import java.time.LocalTime;
+import java.util.TreeMap;
+import logica.paseo.*;
 
-import java.io.Serializable;
-
-public class Minivan implements Serializable {
+public class Minivan {
     private String matricula;
-    private int capacidad;
     private String marca;
-    private Paseos paseos;
+    private int capacidad;
+    private TreeMap<String, Paseo> paseosAsignados; // Diccionario de paseos asignados
 
-
-    public Minivan(VOMinivan vo) {
-        this.matricula = vo.getMatricula();
-        this.capacidad = vo.getCapacidad();
-        this.marca = vo.getMarca();
-        this.paseos = new Paseos();
+    public Minivan(VOMinivan voMinivan) {
+        this.matricula = voMinivan.getMatricula();
+        this.marca = voMinivan.getMarca();
+        this.capacidad = voMinivan.getCapacidad();
+        this.paseosAsignados = new TreeMap<>();
     }
 
+    // Getters y Setters
     public String getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public String getMarca() {
+        return marca;
     }
 
     public int getCapacidad() {
         return capacidad;
     }
 
-    public void setCapacidad(int capacidad) {
-        this.capacidad = capacidad;
+    public TreeMap<String, Paseo> getPaseosAsignados() {
+        return paseosAsignados;
     }
 
-    
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-    
-    public Paseos getPaseos() {
-        return paseos;
-    }
-
-    public void setPaseos(Paseos paseos) {
-        this.paseos = paseos;
-    }
-
+    // Método para obtener el VO de la minivan
     public VOMinivan getVO() {
-        return new VOMinivan(
-                this.matricula,
-                this.capacidad,
-                this.marca
-        );
+        return new VOMinivan(matricula, capacidad, marca);
+    }
+    
+    
+    /// REQUERIMIENTO 3
+    public boolean estaDisponible(LocalTime horaPartidaNueva, LocalTime horaRegresoNueva) {
+        for (Paseo paseo : paseosAsignados.values()) {
+            LocalTime horaPartidaExistente = paseo.getHoraPartida();
+            LocalTime horaRegresoExistente = paseo.getHoraRegreso();
+
+            // Verificar si hay superposición de horarios
+            if (horaPartidaNueva.isBefore(horaRegresoExistente) && horaRegresoNueva.isAfter(horaPartidaExistente)) {
+                return false; // Hay superposición, la minivan no está disponible
+            }
+        }
+        return true; // No hay superposición, la minivan está disponible
+    }
+ // Método para agregar un paseo a la minivan
+    public void agregarPaseo(Paseo paseo) {
+        if (estaDisponible(paseo.getHoraPartida(), paseo.getHoraRegreso())) {
+            paseosAsignados.put(paseo.getId(), paseo);
+            System.out.println("Paseo " + paseo.getId() + " asignado a la minivan " + this.matricula);
+        } else {
+            System.out.println("Error: La minivan " + this.matricula + " no está disponible para el horario del paseo " + paseo.getId());
+        }
     }
 }

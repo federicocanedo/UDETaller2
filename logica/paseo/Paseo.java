@@ -3,6 +3,8 @@ package logica.paseo;
 import java.io.Serializable;
 import java.time.LocalTime;
 import logica.boletos.Boletos;
+import logica.boletos.VOBoleto;
+import logica.*;
 
 public class Paseo implements Serializable {
     private String id;
@@ -10,10 +12,15 @@ public class Paseo implements Serializable {
     private LocalTime horaPartida;
     private LocalTime horaRegreso;
     private int CantMaxBoletos;
-    //// AGREGAR BOLETO --> COMO HACER HERENCIA ACA
     private int precioBase;
 
-
+    public void agregarBoleto(VOBoleto voBoleto) {
+        if (boletos.size() < CantMaxBoletos) {
+            boletos.agregarBoleto(voBoleto);
+        } else {
+            System.out.println("No se pueden agregar más boletos, se ha alcanzado la capacidad máxima.");
+        }
+    }
     public Boletos getBoletos() { return boletos; }
 
     public void setBoletos(Boletos boletos) { this.boletos = boletos; }
@@ -74,7 +81,7 @@ public class Paseo implements Serializable {
         return CantMaxBoletos;
     }
 
-    public void serCantMaxBoletos(int CantMaxBoletos) {
+    public void setCantMaxBoletos(int CantMaxBoletos) {
         this.CantMaxBoletos = CantMaxBoletos;
     }
 
@@ -88,4 +95,8 @@ public class Paseo implements Serializable {
             this.CantMaxBoletos
         );
     }
+    public int getCantidadBoletosVendidos() {
+        return boletos.size();
+    }
+
 }

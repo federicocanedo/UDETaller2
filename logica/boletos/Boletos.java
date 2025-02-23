@@ -4,6 +4,7 @@ import logica.exception.EntidadNoExisteException;
 import logica.exception.EntidadYaExisteException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Boletos extends ArrayList<Boleto> {
 
@@ -38,5 +39,8 @@ public class Boletos extends ArrayList<Boleto> {
             voBoletos[index++] = boleto.getVO();
         }
         return voBoletos;
+    }
+    public List<Boleto> getBoletos() {
+        return this;
     }
 }
