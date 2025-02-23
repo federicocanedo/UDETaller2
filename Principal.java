@@ -1,93 +1,52 @@
-import logica.exception.EntidadYaExisteException;
-import logica.exception.PersistenciaException;
-import logica.minivan.Minivan;
-import logica.minivan.Minivans;
-import logica.minivan.VOMinivan;
-import logica.paseo.Paseos;
-import logica.paseo.VOPaseo;
-import persistencia.*;
-
 import java.time.LocalTime;
+import java.util.List;
+
+import logica.boletos.VOBoleto;
+import logica.exception.*;
+import logica.minivan.*;
+import logica.paseo.*;
+
+import java.util.List;
+
+import java.util.List;
 
 public class Principal {
     public static void main(String[] args) {
-        Paseos paseos = new Paseos();
-        Minivans minivans = new Minivans();
+        // Crear una instancia de la Fachada
+        Fachada fachada = new Fachada();
 
+        // Registrar una minivan (esto no se mostrará en la salida)
+        fachada.registrarMinivan("MIN001", "Toyota", 10);
+
+        // Registrar un paseo (esto no se mostrará en la salida)
+        LocalTime horaPartida = LocalTime.of(8, 0); // 8:00 AM
+        LocalTime horaRegreso = LocalTime.of(12, 0); // 12:00 PM
+        fachada.registrarPaseo("P0012", "Playa", horaPartida, horaRegreso, 50);
+
+        // Vender boletos comunes y especiales (esto no se mostrará en la salida)
+        venderBoleto(fachada, "P0012", "Juan Perez", 25, "12345678", false, 0); // Boleto común
+        venderBoleto(fachada, "P0012", "Maria Gomez", 30, "87654321", false, 0); // Boleto común
+        venderBoleto(fachada, "P0012", "Carlos Ruiz", 40, "55555555", true, 10); // Boleto especial
+        venderBoleto(fachada, "P0012", "Ana Lopez", 17, "99999999", true, 5);    // Boleto especial
+
+        // Listar boletos vendidos para el paseo P0012
+        System.out.println("Listado de boletos vendidos para el paseo P0012:");
         try {
-            VOPaseo voPaseo1 = new VOPaseo(
-                    "195",
-                    "Playa del Cerro",
-                    LocalTime.of(9, 0),
-                    LocalTime.of(12, 0),
-                    100, /// ACA ESTOY AGREGANDO CANTBOLETOSMAX?
-                    100
-            );
-            paseos.insertarPaseo(voPaseo1);
-
-            VOPaseo voPaseo2 = new VOPaseo(
-                    "405",
-                    "Casavalle",
-                    LocalTime.of(10, 0),
-                    LocalTime.of(14, 0),
-                    102, /// ACA ESTOY AGREGANDO CANTBOLETOSMAX?
-                    150
-            );
-            paseos.insertarPaseo(voPaseo2);
-        } catch (EntidadYaExisteException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\nLista de Paseos:");
-        for (VOPaseo voPaseo : paseos.listarPaseos()) {
-            System.out.println(voPaseo.getId() + ": " + voPaseo.getDestino());
-        }
-
-        try {
-            VOMinivan voMinivan1 = new VOMinivan("ABC123", 7, "RolsRoice");
-            minivans.insertarMinivan(voMinivan1);
-            VOMinivan voMinivan2 = new VOMinivan("XYZ789", 9, "RolsRoice");
-            minivans.insertarMinivan(voMinivan2);
-        } catch (EntidadYaExisteException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\nLista de Minivans:");
-        for (VOMinivan voMinivan : minivans.listarMinivans()) {
-            System.out.println(
-                    voMinivan.getMatricula() + ": " + voMinivan.getCapacidad() + " capacidad"
-            );
-        }
-
-        Minivan minivan1 = minivans.buscarMinivan("ABC123");
-        if (minivan1 != null) {
-            minivan1.setPaseos(paseos);
-        }
-
-        System.out.println("\nMinivan ABC123 con Paseos:");
-        for (VOPaseo voPaseo : minivan1.getPaseos().listarPaseos()) {
-            System.out.println(voPaseo.getId() + ": " + voPaseo.getDestino());
+            List<VOBoleto> boletosVendidos = fachada.listarBoletosVendidos("P0012", false); // Cambia a true para boletos especiales
+            for (VOBoleto boleto : boletosVendidos) {
+                System.out.println("Número: " + boleto.getId() +
+                                   ", Nombre: " + boleto.getP_nombre() +
+                                   ", Edad: " + boleto.getP_edad() +
+                                   ", Celular: " + boleto.getP_numCelular() +
+                                   (boleto.getBoletoEspecial() != null ? ", Descuento: " + boleto.getBoletoEspecial().getDescuento() : ""));
+            }
+        } catch (EntidadNoExisteException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
-    public void guardarDatos(Paseos paseos, Minivans minivans) {
-        Persistencia persistencia = new Persistencia();
-
-        try {
-            persistencia.respaldar("respaldo.dat", new VORespaldo(paseos, minivans));
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public VORespaldo recuperarDatos() {
-        Persistencia persistencia = new Persistencia();
-
-        try {
-            return persistencia.recuperar("respaldo.dat");
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+    // Método auxiliar para vender un boleto (esto no se mostrará en la salida)
+    private static void venderBoleto(Fachada fachada, String codigoPaseo, String nombreTurista, int edadTurista, String numeroCelular, boolean esBoletoEspecial, double descuento) {
+        fachada.venderBoleto(codigoPaseo, nombreTurista, edadTurista, numeroCelular, esBoletoEspecial, descuento);
     }
 }
