@@ -10,15 +10,9 @@ public class Paseo implements Serializable {
     private LocalTime horaPartida;
     private LocalTime horaRegreso;
     private int CantMaxBoletos;
+    private Boletos boletos;
     //// AGREGAR BOLETO --> COMO HACER HERENCIA ACA
     private int precioBase;
-
-
-    public Boletos getBoletos() { return boletos; }
-
-    public void setBoletos(Boletos boletos) { this.boletos = boletos; }
-
-    private Boletos boletos;
 
     public Paseo(VOPaseo vo) {
         this.id = vo.getId();
@@ -26,7 +20,6 @@ public class Paseo implements Serializable {
         this.horaPartida = vo.getHoraPartida();
         this.horaRegreso = vo.getHoraRegreso();
         this.precioBase = vo.getPrecioBase();
-        this.CantMaxBoletos = vo.getCantMaxBoletos();
         this.boletos = new Boletos();
     }
 
@@ -69,14 +62,10 @@ public class Paseo implements Serializable {
     public void setPrecioBase(int precioBase) {
         this.precioBase = precioBase;
     }
-    
-    public int getCantMaxBoletos() {
-        return CantMaxBoletos;
-    }
 
-    public void serCantMaxBoletos(int CantMaxBoletos) {
-        this.CantMaxBoletos = CantMaxBoletos;
-    }
+    public Boletos getBoletos() { return boletos; }
+
+    public void setBoletos(Boletos boletos) { this.boletos = boletos; }
 
     public VOPaseo getVO() {
         return new VOPaseo(
@@ -85,7 +74,7 @@ public class Paseo implements Serializable {
             this.horaPartida,
             this.horaRegreso,
             this.precioBase,
-            this.CantMaxBoletos
+            this.boletos.listarBoletos()
         );
     }
 }
