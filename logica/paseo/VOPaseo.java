@@ -1,39 +1,56 @@
 package logica.paseo;
 
+import logica.boletos.VOBoleto;
+
 import java.io.Serializable;
 import java.time.LocalTime;
 
 public class VOPaseo implements Serializable {
+    private VOBoleto[] boletos;
     private String id;
     private String destino;
     private LocalTime horaPartida;
     private LocalTime horaRegreso;
-    private int CantMaxBoletos;
-    //// AGREGAR BOLETO --> COMO HACER HERENCIA ACA
     private int precioBase;
+
+    private int boletosDisponibles;
+
+    public VOBoleto[] getBoletos() {
+        return boletos;
+    }
 
     public VOPaseo(
         String id,
         String destino,
         LocalTime horaPartida,
         LocalTime horaRegreso,
-        int CantMaxBoletos,
-        int precioBase
+        int precioBase,
+        VOBoleto[] boletos
     ) {
         this.id = id;
         this.destino = destino;
         this.horaPartida = horaPartida;
         this.horaRegreso = horaRegreso;
-        this.CantMaxBoletos = CantMaxBoletos;
+        this.precioBase = precioBase;
+        this.boletos = boletos;
+    }
+
+    public VOPaseo(
+            String id,
+            String destino,
+            LocalTime horaPartida,
+            LocalTime horaRegreso,
+            int precioBase
+    ) {
+        this.id = id;
+        this.destino = destino;
+        this.horaPartida = horaPartida;
+        this.horaRegreso = horaRegreso;
         this.precioBase = precioBase;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getDestino() {
@@ -59,14 +76,6 @@ public class VOPaseo implements Serializable {
     public void sethoraRegreso(LocalTime horaRegreso) {
         this.horaRegreso = horaRegreso;
     }
-    
-    public int getCantMaxBoletos() {
-        return CantMaxBoletos;
-    }
-
-    public void CantMaxBoletos(int CantMaxBoletos) {
-        this.CantMaxBoletos = CantMaxBoletos;
-    }
 
     public int getPrecioBase() {
         return precioBase;
@@ -74,5 +83,13 @@ public class VOPaseo implements Serializable {
 
     public void setPrecioBase(int precioBase) {
         this.precioBase = precioBase;
+    }
+
+    public int getBoletosDisponibles() {
+        return boletosDisponibles;
+    }
+
+    public void setBoletosDisponibles(int boletosDisponibles) {
+        this.boletosDisponibles = boletosDisponibles;
     }
 }
