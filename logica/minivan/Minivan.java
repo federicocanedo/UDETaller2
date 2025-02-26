@@ -55,7 +55,8 @@ public class Minivan implements Serializable {
         return new VOMinivan(
                 this.matricula,
                 this.capacidad,
-                this.marca
+                this.marca,
+                this.paseos.listarPaseos()
         );
     }
 }
