@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import logica.Monitor;
+import logica.boletos.Boleto;
+import logica.boletos.BoletoEspecial;
+import logica.boletos.VOBoleto;
+import logica.boletos.VOBoletoEspecial;
 import logica.exception.ArgumentoInvalidoException;
 import logica.exception.EntidadNoExisteException;
 import logica.exception.EntidadYaExisteException;
@@ -28,11 +32,11 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         this.monitor = new Monitor();
     }
 
-    public void guardarDatos(VORespaldo respaldo) {
+    public void guardarDatos() {
         Persistencia persistencia = new Persistencia();
         this.monitor.comienzoEscritura();
         try {
-            persistencia.respaldar("respaldo.dat", respaldo);
+            persistencia.respaldar("respaldo.dat", new VORespaldo(this.paseos, this.minivans));
             this.monitor.terminoEscritura();
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
@@ -40,25 +44,28 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         }
     }
 
-    public VORespaldo recuperarDatos() {
+    public void recuperarDatos() {
         Persistencia persistencia = new Persistencia();
         this.monitor.comienzoLectura();
 
         try {
             VORespaldo respaldo = persistencia.recuperar("respaldo.dat");
             this.monitor.terminoLectura();
-            return respaldo;
+
+            this.monitor.comienzoEscritura();
+            this.paseos = respaldo.getPaseos();
+            this.minivans = respaldo.getMinivans();
+            this.monitor.terminoEscritura();
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
             this.monitor.terminoLectura();
-            return null;
         }
     }
 
-    public void registrarMinivan(Minivans minivans, VOMinivan minivan) {
+    public void registrarMinivan(VOMinivan minivan) {
         this.monitor.comienzoEscritura();
         try {
-            minivans.insertarMinivan(minivan);
+            this.minivans.insertarMinivan(minivan);
             this.monitor.terminoEscritura();
         } catch (EntidadYaExisteException e) {
             System.out.println(e.getMessage());
@@ -66,10 +73,10 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         }
     }
 
-    public VOMinivan[] listarMinivans(Minivans minivans) {
+    public VOMinivan[] listarMinivans() {
         this.monitor.comienzoLectura();
 
-        VOMinivan[] listadoMinivans = minivans.listarMinivans();
+        VOMinivan[] listadoMinivans = this.minivans.listarMinivans();
         Arrays.sort(listadoMinivans, new Comparator<VOMinivan>() {
             @Override
             public int compare(VOMinivan m1, VOMinivan m2) {
@@ -80,7 +87,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         return listadoMinivans;
     }
 
-    public void registrarPaseo(Paseos paseos, VOPaseo voPaseo, Minivans minivans) throws ArgumentoInvalidoException {
+    public void registrarPaseo(VOPaseo voPaseo) throws ArgumentoInvalidoException {
         if (voPaseo.getPrecioBase() <= 0) {
             throw new ArgumentoInvalidoException("El precio base debe ser mayor que cero.");
         }
@@ -88,7 +95,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         this.monitor.comienzoEscritura();
 
         Minivan minivanDisponible = null;
-        for (Minivan minivan : minivans.values()) {
+        for (Minivan minivan : this.minivans.values()) {
             boolean disponible = true;
             for (Paseo paseo : minivan.getPaseos().values()) {
                 if (voPaseo.getHoraPartida().isBefore(paseo.getHoraRegreso()) &&
@@ -108,32 +115,29 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
             throw new ArgumentoInvalidoException("No hay ninguna minivan con disponibilidad horaria.");
         }
 
-        Paseo nuevoPaseo = new Paseo(voPaseo);
-        paseos.insertarPaseo(voPaseo);
-        minivanDisponible.getPaseos().put(nuevoPaseo.getId(), nuevoPaseo);
+        voPaseo.setCantMaxBoletos(minivanDisponible.getCapacidad());
+        minivanDisponible.getPaseos().insertarPaseo(voPaseo);
+        this.paseos.insertarPaseo(voPaseo);
         this.monitor.terminoEscritura();
     }
 
-    public VOPaseo[] listarPaseosDeMinivan(Minivans minivans, String matricula) throws EntidadNoExisteException {
+    public VOPaseo[] listarPaseosDeMinivan(String matricula) throws EntidadNoExisteException {
         this.monitor.comienzoLectura();
 
-        Minivan minivan = minivans.get(matricula);
+        Minivan minivan = this.minivans.get(matricula);
         if (minivan == null) {
             this.monitor.terminoLectura();
             throw new EntidadNoExisteException("No existe una minivan con matrícula " + matricula);
         }
 
         VOPaseo[] listadoPaseos = minivan.getPaseos().listarPaseos();
-        for (VOPaseo voPaseo : listadoPaseos) {
-            voPaseo.setBoletosDisponibles(minivan.getCapacidad() - voPaseo.getBoletos().length);
-        }
         this.monitor.terminoLectura();
         return listadoPaseos;
     }
 
-    public VOPaseo[] listarPaseosPorDestino(Paseos paseos, String destino) {
+    public VOPaseo[] listarPaseosPorDestino(String destino) {
         this.monitor.comienzoLectura();
-        VOPaseo[] listadoPaseos = paseos.listarPaseos();
+        VOPaseo[] listadoPaseos = this.paseos.listarPaseos();
         VOPaseo[] paseosFiltrados = new VOPaseo[listadoPaseos.length];
         int index = 0;
         for (VOPaseo voPaseo : listadoPaseos) {
@@ -145,12 +149,12 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         return Arrays.copyOf(paseosFiltrados, index);
     }
 
-    public VOPaseo[] listarPaseosDisponibles(Minivans minivans) {
+    public VOPaseo[] listarPaseosPorDisponibilidadBoletos(int cantidadBoletos) {
         this.monitor.comienzoLectura();
         VOPaseo[] listadoPaseos = new VOPaseo[0];
-        for (Minivan minivan : minivans.values()) {
+        for (Minivan minivan : this.minivans.values()) {
             for (Paseo paseo : minivan.getPaseos().values()) {
-                if (paseo.getBoletos().size() < minivan.getCapacidad()) {
+                if (minivan.getCapacidad() - paseo.getBoletos().size() > cantidadBoletos) {
                     listadoPaseos = Arrays.copyOf(listadoPaseos, listadoPaseos.length + 1);
                     listadoPaseos[listadoPaseos.length - 1] = paseo.getVO();
                 }
@@ -159,4 +163,25 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         this.monitor.terminoLectura();
         return listadoPaseos;
     }
+
+//    public void venderBoleto(String paseoId, VOBoleto boleto) {
+//        this.monitor.comienzoEscritura();
+//
+//        Paseo paseo = this.paseos.get(paseoId);
+//        if (paseo == null) {
+//            this.monitor.terminoEscritura();
+//            throw new EntidadNoExisteException("No existe un paseo con el código " + paseoId);
+//        }
+//
+//        VOBoletoEspecial boletoEspecial = (VOBoletoEspecial) boleto;
+//        boletoEspecial.setDescuento(5);
+//
+//        paseo.getBoletos().add(new BoletoEspecial(boletoEspecial));
+//
+//        if (paseo.getBoletos().size() >= paseo.getCantMaxBoletos()) {
+//            this.monitor.terminoEscritura();
+//            throw new ArgumentoInvalidoException("Se ha alcanzado la cantidad máxima de boletos para el paseo " + paseoId);
+//        }
+//
+//    }
 }

@@ -14,6 +14,10 @@ public class Paseos extends TreeMap<String, Paseo> {
         this.put(paseo.getId(), new Paseo(paseo));
     }
 
+    public boolean paseoExiste(String id) {
+        return this.containsKey(id);
+    }
+
     public VOPaseo[] listarPaseos() {
         int size = this.size();
         VOPaseo[] voPaseos = new VOPaseo[size];

@@ -13,7 +13,7 @@ public class VOPaseo implements Serializable {
     private LocalTime horaRegreso;
     private int precioBase;
 
-    private int boletosDisponibles;
+    private int cantMaxBoletos;
 
     public VOBoleto[] getBoletos() {
         return boletos;
@@ -25,6 +25,7 @@ public class VOPaseo implements Serializable {
         LocalTime horaPartida,
         LocalTime horaRegreso,
         int precioBase,
+        int cantMaxBoletos,
         VOBoleto[] boletos
     ) {
         this.id = id;
@@ -33,6 +34,7 @@ public class VOPaseo implements Serializable {
         this.horaRegreso = horaRegreso;
         this.precioBase = precioBase;
         this.boletos = boletos;
+        this.cantMaxBoletos = cantMaxBoletos;
     }
 
     public VOPaseo(
@@ -85,11 +87,11 @@ public class VOPaseo implements Serializable {
         this.precioBase = precioBase;
     }
 
-    public int getBoletosDisponibles() {
-        return boletosDisponibles;
+    public int getCantMaxBoletos() {
+        return cantMaxBoletos;
     }
 
-    public void setBoletosDisponibles(int boletosDisponibles) {
-        this.boletosDisponibles = boletosDisponibles;
+    public void setCantMaxBoletos(int cantMaxBoletos) {
+        this.cantMaxBoletos = cantMaxBoletos;
     }
 }

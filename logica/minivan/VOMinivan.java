@@ -9,19 +9,22 @@ public class VOMinivan implements Serializable {
     private int capacidad;
     private String marca;
     private int cantAsignados;
+    private String modelo;
 
-    public VOMinivan(String matricula, int capacidad, String marca, VOPaseo[] paseos) {
+    public VOMinivan(String matricula, int capacidad, String marca, String modelo, VOPaseo[] paseos) {
         this.matricula = matricula;
         this.capacidad = capacidad;
         this.marca = marca;
         this.paseos = paseos;
+        this.modelo = modelo;
         this.cantAsignados = paseos.length;
     }
 
-    public VOMinivan(String matricula, int capacidad, String marca) {
+    public VOMinivan(String matricula, int capacidad, String marca, String modelo) {
         this.matricula = matricula;
         this.capacidad = capacidad;
         this.marca = marca;
+        this.modelo = modelo;
         this.cantAsignados = 0;
     }
 
@@ -55,6 +58,14 @@ public class VOMinivan implements Serializable {
 
     public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
     public int getCantAsignados() {

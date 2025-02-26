@@ -11,19 +11,19 @@ import java.rmi.RemoteException;
 
 public interface IFachada extends Remote {
 
-    void guardarDatos(VORespaldo respaldo) throws RemoteException;
+    void guardarDatos() throws RemoteException;
 
-    VORespaldo recuperarDatos() throws RemoteException;
+    void recuperarDatos() throws RemoteException;
 
-    void registrarMinivan(Minivans minivans, VOMinivan minivan) throws RemoteException;
+    void registrarMinivan(VOMinivan minivan) throws RemoteException;
 
-    VOMinivan[] listarMinivans(Minivans minivans) throws RemoteException;
+    VOMinivan[] listarMinivans() throws RemoteException;
 
-    void registrarPaseo(Paseos paseos, VOPaseo voPaseo, Minivans minivans) throws RemoteException, ArgumentoInvalidoException;
+    void registrarPaseo(VOPaseo voPaseo) throws RemoteException, ArgumentoInvalidoException;
 
-    VOPaseo[] listarPaseosDeMinivan(Minivans minivans, String matricula) throws RemoteException, EntidadNoExisteException;
+    VOPaseo[] listarPaseosDeMinivan(String matricula) throws RemoteException, EntidadNoExisteException;
 
-    VOPaseo[] listarPaseosPorDestino(Paseos paseos, String destino) throws RemoteException;
+    VOPaseo[] listarPaseosPorDestino(String destino) throws RemoteException;
 
-    VOPaseo[] listarPaseosDisponibles(Minivans minivans) throws RemoteException;
+    VOPaseo[] listarPaseosPorDisponibilidadBoletos(int cantidadBoletos) throws RemoteException;
 }
