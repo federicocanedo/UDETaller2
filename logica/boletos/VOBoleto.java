@@ -16,6 +16,12 @@ public class VOBoleto implements Serializable {
         this.p_numCelular = p_numCelular;
     }
 
+    public VOBoleto(String p_nombre, int p_edad, String p_numCelular) {
+        this.p_nombre = p_nombre;
+        this.p_edad = p_edad;
+        this.p_numCelular = p_numCelular;
+    }
+
     public int getId() {
         return id;
     }

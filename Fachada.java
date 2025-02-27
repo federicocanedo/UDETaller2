@@ -92,6 +92,10 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
             throw new ArgumentoInvalidoException("El precio base debe ser mayor que cero.");
         }
 
+        if (this.paseos.paseoExiste(voPaseo.getId())) {
+            throw new ArgumentoInvalidoException("Ya existe un paseo con el código " + voPaseo.getId());
+        }
+
         this.monitor.comienzoEscritura();
 
         Minivan minivanDisponible = null;
@@ -116,8 +120,9 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         }
 
         voPaseo.setCantMaxBoletos(minivanDisponible.getCapacidad());
-        minivanDisponible.getPaseos().insertarPaseo(voPaseo);
-        this.paseos.insertarPaseo(voPaseo);
+        Paseo paseo = new Paseo(voPaseo);
+        this.paseos.put(voPaseo.getId(), paseo);
+        minivanDisponible.getPaseos().put(voPaseo.getId(), paseo);
         this.monitor.terminoEscritura();
     }
 
@@ -164,24 +169,48 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         return listadoPaseos;
     }
 
-//    public void venderBoleto(String paseoId, VOBoleto boleto) {
-//        this.monitor.comienzoEscritura();
-//
-//        Paseo paseo = this.paseos.get(paseoId);
-//        if (paseo == null) {
-//            this.monitor.terminoEscritura();
-//            throw new EntidadNoExisteException("No existe un paseo con el código " + paseoId);
-//        }
-//
-//        VOBoletoEspecial boletoEspecial = (VOBoletoEspecial) boleto;
-//        boletoEspecial.setDescuento(5);
-//
-//        paseo.getBoletos().add(new BoletoEspecial(boletoEspecial));
-//
-//        if (paseo.getBoletos().size() >= paseo.getCantMaxBoletos()) {
-//            this.monitor.terminoEscritura();
-//            throw new ArgumentoInvalidoException("Se ha alcanzado la cantidad máxima de boletos para el paseo " + paseoId);
-//        }
-//
-//    }
+    public void venderBoleto(String paseoId, VOBoleto boleto) {
+        this.monitor.comienzoEscritura();
+
+        Paseo paseo = this.paseos.get(paseoId);
+        if (paseo == null) {
+            this.monitor.terminoEscritura();
+            throw new EntidadNoExisteException("No existe un paseo con el código " + paseoId);
+        }
+
+        boolean paseoEncontrado = false;
+        for (Minivan minivan : this.minivans.values()) {
+            if (!paseoEncontrado) {
+                paseoEncontrado = minivan.getPaseos().paseoExiste(paseoId);
+            }
+        }
+        if (!paseoEncontrado) {
+            this.monitor.terminoEscritura();
+            throw new EntidadNoExisteException("Paseo " + paseoId + " no está asignado a ninguna minivan");
+        }
+
+        if (paseo.getBoletos().size() >= paseo.getCantMaxBoletos()) {
+            this.monitor.terminoEscritura();
+            throw new ArgumentoInvalidoException("Se ha alcanzado la cantidad máxima de boletos para el paseo " + paseoId);
+        }
+
+        if (boleto instanceof VOBoletoEspecial) {
+            paseo.getBoletos().add(new BoletoEspecial((VOBoletoEspecial) boleto));
+        } else {
+            paseo.getBoletos().add(new Boleto(boleto));
+        }
+
+        this.monitor.terminoEscritura();
+    }
+
+    public VOBoleto[] listarBoletosDePaseo(String paseoId, boolean comun, boolean especiales) {
+        this.monitor.comienzoLectura();
+        Paseo paseo = this.paseos.get(paseoId);
+        if (paseo == null) {
+            this.monitor.terminoLectura();
+            throw new EntidadNoExisteException("No existe un paseo con el código " + paseoId);
+        }
+        this.monitor.terminoLectura();
+        return paseo.getBoletos().listarBoletos(comun, especiales);
+    }
 }

@@ -83,7 +83,7 @@ public class Paseo implements Serializable {
             this.horaRegreso,
             this.precioBase,
             this.cantMaxBoletos,
-            this.boletos.listarBoletos()
+            this.boletos.listarBoletos(true, true)
         );
     }
 }

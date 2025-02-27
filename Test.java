@@ -1,3 +1,5 @@
+import logica.boletos.VOBoleto;
+import logica.boletos.VOBoletoEspecial;
 import logica.exception.ArgumentoInvalidoException;
 import logica.exception.EntidadNoExisteException;
 import logica.exception.EntidadYaExisteException;
@@ -133,6 +135,8 @@ public class Test {
             );
         }
 
+
+
         /*
         Requerimiento 7
         Venta de boleto:
@@ -150,52 +154,83 @@ public class Test {
         */
 
 
+        VOBoletoEspecial boletoEspecial = new VOBoletoEspecial(
+                "Juan",
+                20,
+                "099123456",
+                5
+        );
 
-//        try {
-//            VOMinivan voMinivan1 = new VOMinivan("ABC123", 7, "RolsRoice");
-//            minivans.insertarMinivan(voMinivan1);
-//            VOMinivan voMinivan2 = new VOMinivan("XYZ789", 9, "RolsRoice");
-//            minivans.insertarMinivan(voMinivan2);
-//        } catch (EntidadYaExisteException e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-//        try {
-//            VOPaseo voPaseo1 = new VOPaseo(
-//                    "195",
-//                    "Playa del Cerro",
-//                    LocalTime.of(9, 0),
-//                    LocalTime.of(12, 0),
-//                    100
-//            );
-//            registrarPaseo(paseos, voPaseo1, minivans);
-//
-//            VOPaseo voPaseo2 = new VOPaseo(
-//                    "405",
-//                    "Casavalle",
-//                    LocalTime.of(10, 0),
-//                    LocalTime.of(14, 0),
-//                    102
-//            );
-//            registrarPaseo(paseos, voPaseo2, minivans);
-//        } catch (EntidadYaExisteException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        System.out.println("\nLista de Minivans:");
-//        for (VOMinivan voMinivan : minivans.listarMinivans()) {
-//            System.out.println(
-//                    voMinivan.getMatricula() + ": " + voMinivan.getCapacidad() + " capacidad"
-//            );
-//        }
-//
-//        Minivan minivan1 = minivans.buscarMinivan("ABC123");
-//        if (minivan1 != null) {
-//            minivan1.setPaseos(paseos);
-//        }
-//
-//        System.out.println("\nMinivan ABC123 con Paseos:");
-//        for (VOPaseo voPaseo : minivan1.getPaseos().listarPaseos()) {
-//            System.out.println(voPaseo.getId() + ": " + voPaseo.getDestino());
-//        }
+        VOBoleto boleto = new VOBoleto(
+                "Pere",
+                92,
+                "09001911"
+        );
+
+        fachada.venderBoleto("195", boletoEspecial);
+        fachada.venderBoleto("195", boleto);
+
+
+        /*
+        Requerimiento 8
+        Listado de boletos vendidos para un paseo:
+        Dados un código de paseo y un tipo de boleto (común o especial),
+        obtener un listado de todos los boletos de ese tipo vendidos para dicho paseo.
+        Este listado se brindará ordenado por número de boleto de menor a mayor. De cada boleto se listará número de boleto,
+        nombre y edad del pasajero y número de celular. Si el boleto es especial, se listará además el valor del descuento correspondiente.
+        Si no existe ningún paseo registrado con ese código, se producirá un error.
+        */
+        System.out.println("\n\nListar boletos comunes de paseo:");
+        for (VOBoleto b: fachada.listarBoletosDePaseo("195", true, false)) {
+            System.out.println(
+                    "id: " + b.getId()
+                            + "\nNombre: " + b.getP_nombre()
+                            + "\nEdad: " + b.getP_edad()
+                            + "\nNumero de celular: " + b.getP_numCelular()
+            );
+        }
+
+        System.out.println("\n\nListar boletos especiales de paseo:");
+        for (VOBoleto b: fachada.listarBoletosDePaseo("195", false, true)) {
+            System.out.println(
+                    "id: " + ((VOBoletoEspecial)b).getId()
+                            + "\nNombre: " + ((VOBoletoEspecial)b).getP_nombre()
+                            + "\nEdad: " + ((VOBoletoEspecial)b).getP_edad()
+                            + "\nNumero de celular: " + ((VOBoletoEspecial)b).getP_numCelular()
+                            + "\nDescuento: " + ((VOBoletoEspecial)b).getDescuento()
+            );
+        }
+
+        /* Requerimiento 10
+        Respaldo de datos:
+        Respaldar en disco todos los datos de la aplicación.
+        Este requerimiento podrá ejecutarse toda vez que algún vendedor lo considere oportuno,
+        especialmente luego de haber ejecutado funcionalidades que produzcan cambios en la información del sistema.
+        Todos los datos se respaldarán juntos en un único archivo binario en disco (ubicado en el Servidor Central),
+        para luego poder ser recuperados a memoria en una próxima ejecución.
+        */
+        fachada.guardarDatos();
+
+        /*
+        Requerimiento 11
+        Recuperación de datos:
+        Recuperar a memoria todos los datos de la aplicación almacenados en disco.
+        Este requerimiento será ejecutado automáticamente en el servidor central cada vez que el sistema inicie su ejecución
+        (no será disparado por ningún usuario que explícitamente solicite su ejecución).
+        */
+
+        Fachada fachada2 = new Fachada();
+        fachada2.recuperarDatos();
+        System.out.println("\n\nRecuperar datos fachada 2");
+        for (VOMinivan minivan : fachada.listarMinivans()) {
+            System.out.println(
+                    "Matricula: " + minivan.getMatricula() +
+                            "\nMarca: " + minivan.getMarca() +
+                            "\nModelo: " + minivan.getModelo() +
+                            "\nCantidad de asientos: " + minivan.getCapacidad() +
+                            "\nCantidad de paseos asignados: " + minivan.getPaseos().length
+            );
+        }
+
     }
 }

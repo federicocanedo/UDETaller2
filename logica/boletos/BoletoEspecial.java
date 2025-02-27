@@ -1,6 +1,8 @@
 package logica.boletos;
 
-public class BoletoEspecial extends Boleto{
+import java.io.Serializable;
+
+public class BoletoEspecial extends Boleto implements Serializable {
     private double descuento;
 
     public BoletoEspecial(VOBoletoEspecial boleto) {
