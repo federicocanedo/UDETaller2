@@ -1,3 +1,4 @@
+package logica;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;

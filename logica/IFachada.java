@@ -1,3 +1,6 @@
+package logica;
+
+
 import logica.exception.ArgumentoInvalidoException;
 import logica.exception.EntidadNoExisteException;
 import logica.minivan.Minivans;
