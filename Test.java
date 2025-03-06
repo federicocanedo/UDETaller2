@@ -1,28 +1,29 @@
-import logica.boletos.VOBoleto;
-import logica.boletos.VOBoletoEspecial;
-import logica.exception.ArgumentoInvalidoException;
-import logica.exception.EntidadNoExisteException;
-import logica.exception.EntidadYaExisteException;
-import logica.exception.PersistenciaException;
-import logica.minivan.Minivan;
-import logica.minivan.Minivans;
-import logica.minivan.VOMinivan;
-import logica.paseo.Paseo;
-import logica.paseo.Paseos;
-import logica.paseo.VOPaseo;
-import persistencia.*;
+import src.fachada.Fachada;
+import src.fachada.IFachada;
+import src.logica.boletos.VOBoleto;
+import src.logica.boletos.VOBoletoEspecial;
+import src.logica.minivan.Minivans;
+import src.logica.minivan.VOMinivan;
+import src.logica.paseo.Paseos;
+import src.logica.paseo.VOPaseo;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class Test {
     public static void main(String[] args) throws RemoteException {
         Paseos paseos = new Paseos();
         Minivans minivans = new Minivans();
 
-        Fachada fachada = new Fachada();
+//        src.Fachada.Fachada fachada = new src.Fachada.Fachada();
+
+        IFachada fachada = null;
+        try {
+            fachada = (IFachada) Naming.lookup("//localhost:1099/fachada");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         // Requerimiento 1
         /* Registro de minivan: Registrar los datos de una miniván,
@@ -181,7 +182,7 @@ public class Test {
         Si no existe ningún paseo registrado con ese código, se producirá un error.
         */
         System.out.println("\n\nListar boletos comunes de paseo:");
-        for (VOBoleto b: fachada.listarBoletosDePaseo("195", true, false)) {
+        for (VOBoleto b : fachada.listarBoletosDePaseo("195", true, false)) {
             System.out.println(
                     "id: " + b.getId()
                             + "\nNombre: " + b.getP_nombre()
@@ -191,13 +192,13 @@ public class Test {
         }
 
         System.out.println("\n\nListar boletos especiales de paseo:");
-        for (VOBoleto b: fachada.listarBoletosDePaseo("195", false, true)) {
+        for (VOBoleto b : fachada.listarBoletosDePaseo("195", false, true)) {
             System.out.println(
-                    "id: " + ((VOBoletoEspecial)b).getId()
-                            + "\nNombre: " + ((VOBoletoEspecial)b).getP_nombre()
-                            + "\nEdad: " + ((VOBoletoEspecial)b).getP_edad()
-                            + "\nNumero de celular: " + ((VOBoletoEspecial)b).getP_numCelular()
-                            + "\nDescuento: " + ((VOBoletoEspecial)b).getDescuento()
+                    "id: " + ((VOBoletoEspecial) b).getId()
+                            + "\nNombre: " + ((VOBoletoEspecial) b).getP_nombre()
+                            + "\nEdad: " + ((VOBoletoEspecial) b).getP_edad()
+                            + "\nNumero de celular: " + ((VOBoletoEspecial) b).getP_numCelular()
+                            + "\nDescuento: " + ((VOBoletoEspecial) b).getDescuento()
             );
         }
 
