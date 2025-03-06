@@ -2,7 +2,9 @@ package logica.paseo;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-import logica.boletos.Boletos;
+import logica.boletos.*;
+import logica.boletos.VOBoleto;
+import logica.boletos.Boleto;
 
 public class Paseo implements Serializable {
     private String id;

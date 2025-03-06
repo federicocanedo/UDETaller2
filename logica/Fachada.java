@@ -1,9 +1,9 @@
+package logica;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import logica.Monitor;
 import logica.boletos.Boleto;
 import logica.boletos.BoletoEspecial;
 import logica.boletos.VOBoleto;
