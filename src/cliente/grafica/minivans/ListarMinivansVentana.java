@@ -1,8 +1,9 @@
-package src.cliente.ventanas.minivans;
+package src.cliente.grafica.minivans;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import src.logica.minivan.VOMinivan;
 
 public class ListarMinivansVentana extends JFrame {
     private final ListarMinivansController controlador;
@@ -50,12 +51,26 @@ public class ListarMinivansVentana extends JFrame {
     }
 
     public void actualizarLista() {
-        controlador.listarMinivans();
+        try {
+            controlador.listarMinivans();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al listar minivans: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    public void setDatosTabla(Object[][] datos) {
+    public void mostrarMinivans(VOMinivan[] minivans) {
         modeloTabla.setRowCount(0);
-        for (Object[] fila : datos) {
+        for (VOMinivan minivan : minivans) {
+            Object[] fila = new Object[] {
+                minivan.getMatricula(),
+                minivan.getMarca(),
+                minivan.getModelo(),
+                minivan.getCapacidad(),
+                minivan.getCantAsignados()
+            };
             modeloTabla.addRow(fila);
         }
     }

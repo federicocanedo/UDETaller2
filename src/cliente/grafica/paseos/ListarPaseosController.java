@@ -1,8 +1,9 @@
-package src.cliente.ventanas.paseos;
+package src.cliente.grafica.paseos;
 
 import src.configuracion.ArchivoConfiguracion;
 import src.fachada.*;
 import src.logica.exception.EntidadNoExisteException;
+import src.logica.exception.SinConexionException;
 import src.logica.paseo.VOPaseo;
 
 import java.net.MalformedURLException;
@@ -12,11 +13,16 @@ import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 
 public class ListarPaseosController {
-    private static IFachada fachada = null;
+    private IFachada fachada;
     private final ListarPaseosVentana ventana;
 
     public ListarPaseosController(ListarPaseosVentana ventana) {
         this.ventana = ventana;
+        this.fachada = null;
+        conectarServidor();
+    }
+
+    private void conectarServidor() {
         try {
             ArchivoConfiguracion config = ArchivoConfiguracion.getInstancia();
             String rmiUrl = String.format("//%s:%s/%s",
@@ -25,7 +31,7 @@ public class ListarPaseosController {
                     config.getNombreServidor());
             
             System.out.println("Conectando a servicio RMI en: " + rmiUrl);
-            fachada = (IFachada) Naming.lookup(rmiUrl);
+            this.fachada = (IFachada) Naming.lookup(rmiUrl);
             System.out.println("Conexión exitosa al servicio RMI");
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
             JOptionPane.showMessageDialog(ventana,
@@ -37,24 +43,24 @@ public class ListarPaseosController {
     }
 
     public void listarTodosLosPaseos() throws Exception {
-        if (fachada == null) {
-            throw new Exception("No hay conexión con el servidor");
+        if (this.fachada == null) {
+            throw new SinConexionException();
         }
         try {
-            VOPaseo[] paseos = fachada.listarPaseosPorDestino(""); // Lista vacía para obtener todos
-            mostrarPaseosEnTabla(paseos);
+            VOPaseo[] paseos = this.fachada.listarPaseosPorDestino(""); // Lista vacía para obtener todos
+            ventana.mostrarPaseos(paseos);
         } catch (RemoteException e) {
             throw new Exception("Error al obtener la lista de paseos: " + e.getMessage());
         }
     }
 
     public void listarPaseosPorMatricula(String matricula) throws Exception {
-        if (fachada == null) {
-            throw new Exception("No hay conexión con el servidor");
+        if (this.fachada == null) {
+            throw new SinConexionException();
         }
         try {
-            VOPaseo[] paseos = fachada.listarPaseosDeMinivan(matricula);
-            mostrarPaseosEnTabla(paseos);
+            VOPaseo[] paseos = this.fachada.listarPaseosDeMinivan(matricula);
+            ventana.mostrarPaseos(paseos);
         } catch (RemoteException e) {
             throw new Exception("Error al obtener paseos por matrícula: " + e.getMessage());
         } catch (EntidadNoExisteException e) {
@@ -63,43 +69,26 @@ public class ListarPaseosController {
     }
 
     public void listarPaseosPorDestino(String destino) throws Exception {
-        if (fachada == null) {
-            throw new Exception("No hay conexión con el servidor");
+        if (this.fachada == null) {
+            throw new SinConexionException();
         }
         try {
-            VOPaseo[] paseos = fachada.listarPaseosPorDestino(destino);
-            mostrarPaseosEnTabla(paseos);
+            VOPaseo[] paseos = this.fachada.listarPaseosPorDestino(destino);
+            ventana.mostrarPaseos(paseos);
         } catch (RemoteException e) {
             throw new Exception("Error al obtener paseos por destino: " + e.getMessage());
         }
     }
 
     public void listarPaseosPorDisponibilidad(int cantidadBoletos) throws Exception {
-        if (fachada == null) {
-            throw new Exception("No hay conexión con el servidor");
+        if (this.fachada == null) {
+            throw new SinConexionException();
         }
         try {
-            VOPaseo[] paseos = fachada.listarPaseosPorDisponibilidadBoletos(cantidadBoletos);
-            mostrarPaseosEnTabla(paseos);
+            VOPaseo[] paseos = this.fachada.listarPaseosPorDisponibilidadBoletos(cantidadBoletos);
+            ventana.mostrarPaseos(paseos);
         } catch (RemoteException e) {
             throw new Exception("Error al obtener paseos por disponibilidad: " + e.getMessage());
         }
-    }
-
-    private void mostrarPaseosEnTabla(VOPaseo[] paseos) {
-        Object[][] datos = new Object[paseos.length][7];
-        
-        for (int i = 0; i < paseos.length; i++) {
-            VOPaseo paseo = paseos[i];
-            datos[i][0] = paseo.getId();
-            datos[i][1] = paseo.getDestino();
-            datos[i][2] = paseo.getHoraPartida();
-            datos[i][3] = paseo.getHoraRegreso();
-            datos[i][4] = paseo.getPrecioBase();
-            datos[i][5] = paseo.getCantMaxBoletos();
-            datos[i][6] = paseo.getCantMaxBoletos() - paseo.getBoletos().length;
-        }
-        
-        ventana.setDatosTabla(datos);
     }
 } 

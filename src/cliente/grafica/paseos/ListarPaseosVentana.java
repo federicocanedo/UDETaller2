@@ -1,9 +1,10 @@
-package src.cliente.ventanas.paseos;
+package src.cliente.grafica.paseos;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.time.LocalTime;
+
+import src.logica.paseo.VOPaseo;
 
 public class ListarPaseosVentana extends JFrame {
     private final ListarPaseosController controlador;
@@ -147,9 +148,18 @@ public class ListarPaseosVentana extends JFrame {
         }
     }
 
-    public void setDatosTabla(Object[][] datos) {
+    public void mostrarPaseos(VOPaseo[] paseos) {
         modeloTabla.setRowCount(0);
-        for (Object[] fila : datos) {
+        for (VOPaseo paseo : paseos) {
+            Object[] fila = new Object[] {
+                paseo.getId(),
+                paseo.getDestino(),
+                paseo.getHoraPartida(),
+                paseo.getHoraRegreso(),
+                paseo.getPrecioBase(),
+                paseo.getCantMaxBoletos(),
+                paseo.getCantMaxBoletos() - paseo.getBoletos().length
+            };
             modeloTabla.addRow(fila);
         }
     }

@@ -1,8 +1,10 @@
-package src.cliente.ventanas.boletos;
+package src.cliente.grafica.boletos;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import src.logica.boletos.VOBoleto;
+import src.logica.boletos.VOBoletoEspecial;
 
 public class ListarBoletosVentana extends JFrame {
     private final ListarBoletosController controlador;
@@ -81,12 +83,27 @@ public class ListarBoletosVentana extends JFrame {
             return;
         }
         
-        controlador.listarBoletos(paseoId, chkComunes.isSelected(), chkEspeciales.isSelected());
+        try {
+            controlador.listarBoletos(paseoId, chkComunes.isSelected(), chkEspeciales.isSelected());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al listar boletos: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    public void setDatosTabla(Object[][] datos) {
+    public void mostrarBoletos(VOBoleto[] boletos) {
         modeloTabla.setRowCount(0);
-        for (Object[] fila : datos) {
+        for (VOBoleto boleto : boletos) {
+            Object[] fila = new Object[] {
+                boleto.getId(),
+                boleto.getP_nombre(),
+                boleto.getP_edad(),
+                boleto.getP_numCelular(),
+                boleto instanceof VOBoletoEspecial ? 
+                    ((VOBoletoEspecial) boleto).getDescuento() : ""
+            };
             modeloTabla.addRow(fila);
         }
     }
