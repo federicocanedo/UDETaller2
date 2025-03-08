@@ -3,6 +3,7 @@ package src.fachada;
 import src.logica.boletos.VOBoleto;
 import src.logica.exception.ArgumentoInvalidoException;
 import src.logica.exception.EntidadNoExisteException;
+import src.logica.exception.EntidadYaExisteException;
 import src.logica.exception.PersistenciaException;
 import src.logica.minivan.VOMinivan;
 import src.logica.paseo.VOPaseo;
@@ -16,7 +17,7 @@ public interface IFachada extends Remote {
 
     void recuperarDatos() throws RemoteException, PersistenciaException;
 
-    void registrarMinivan(VOMinivan minivan) throws RemoteException, ArgumentoInvalidoException;
+    void registrarMinivan(VOMinivan minivan) throws RemoteException, ArgumentoInvalidoException, EntidadYaExisteException;
 
     VOMinivan[] listarMinivans() throws RemoteException;
 
@@ -31,4 +32,6 @@ public interface IFachada extends Remote {
     public void venderBoleto(String paseoId, VOBoleto boleto) throws RemoteException, ArgumentoInvalidoException, EntidadNoExisteException;
 
     VOBoleto[] listarBoletosDePaseo(String paseoId, boolean comun, boolean especiales) throws RemoteException, EntidadNoExisteException;
+
+    int calcularMontoRecaudadoPaseo(String paseoId) throws RemoteException, EntidadNoExisteException;
 }

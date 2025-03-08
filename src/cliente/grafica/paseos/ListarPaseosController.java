@@ -47,8 +47,28 @@ public class ListarPaseosController {
             throw new SinConexionException();
         }
         try {
-            VOPaseo[] paseos = this.fachada.listarPaseosPorDestino(""); // Lista vacía para obtener todos
-            ventana.mostrarPaseos(paseos);
+            VOPaseo[] paseos = this.fachada.listarPaseosPorDestino("");
+            ventana.limpiarTabla();
+            
+            for (VOPaseo paseo : paseos) {
+                int montoRecaudado = 0;
+                try {
+                    montoRecaudado = this.fachada.calcularMontoRecaudadoPaseo(paseo.getId());
+                } catch (Exception e) {
+                    System.out.println("Error al calcular el monto recaudado para el paseo " + paseo.getId() + ": " + e.getMessage());
+                }
+                
+                ventana.agregarPaseoATabla(
+                    paseo.getId(),
+                    paseo.getDestino(),
+                    paseo.getHoraPartida(),
+                    paseo.getHoraRegreso(),
+                    paseo.getPrecioBase(),
+                    paseo.getCantMaxBoletos(),
+                    paseo.getBoletos().length,
+                    montoRecaudado
+                );
+            }
         } catch (RemoteException e) {
             throw new Exception("Error al obtener la lista de paseos: " + e.getMessage());
         }
@@ -60,7 +80,27 @@ public class ListarPaseosController {
         }
         try {
             VOPaseo[] paseos = this.fachada.listarPaseosDeMinivan(matricula);
-            ventana.mostrarPaseos(paseos);
+            ventana.limpiarTabla();
+            
+            for (VOPaseo paseo : paseos) {
+                int montoRecaudado = 0;
+                try {
+                    montoRecaudado = this.fachada.calcularMontoRecaudadoPaseo(paseo.getId());
+                } catch (Exception e) {
+                    // Si hay error al calcular el monto, se mantiene en 0
+                }
+                
+                ventana.agregarPaseoATabla(
+                    paseo.getId(),
+                    paseo.getDestino(),
+                    paseo.getHoraPartida(),
+                    paseo.getHoraRegreso(),
+                    paseo.getPrecioBase(),
+                    paseo.getCantMaxBoletos(),
+                    paseo.getBoletos().length,
+                    montoRecaudado
+                );
+            }
         } catch (RemoteException e) {
             throw new Exception("Error al obtener paseos por matrícula: " + e.getMessage());
         } catch (EntidadNoExisteException e) {
@@ -74,7 +114,27 @@ public class ListarPaseosController {
         }
         try {
             VOPaseo[] paseos = this.fachada.listarPaseosPorDestino(destino);
-            ventana.mostrarPaseos(paseos);
+            ventana.limpiarTabla();
+            
+            for (VOPaseo paseo : paseos) {
+                int montoRecaudado = 0;
+                try {
+                    montoRecaudado = this.fachada.calcularMontoRecaudadoPaseo(paseo.getId());
+                } catch (Exception e) {
+                    // Si hay error al calcular el monto, se mantiene en 0
+                }
+                
+                ventana.agregarPaseoATabla(
+                    paseo.getId(),
+                    paseo.getDestino(),
+                    paseo.getHoraPartida(),
+                    paseo.getHoraRegreso(),
+                    paseo.getPrecioBase(),
+                    paseo.getCantMaxBoletos(),
+                    paseo.getBoletos().length,
+                    montoRecaudado
+                );
+            }
         } catch (RemoteException e) {
             throw new Exception("Error al obtener paseos por destino: " + e.getMessage());
         }
@@ -86,7 +146,27 @@ public class ListarPaseosController {
         }
         try {
             VOPaseo[] paseos = this.fachada.listarPaseosPorDisponibilidadBoletos(cantidadBoletos);
-            ventana.mostrarPaseos(paseos);
+            ventana.limpiarTabla();
+            
+            for (VOPaseo paseo : paseos) {
+                int montoRecaudado = 0;
+                try {
+                    montoRecaudado = this.fachada.calcularMontoRecaudadoPaseo(paseo.getId());
+                } catch (Exception e) {
+                    // Si hay error al calcular el monto, se mantiene en 0
+                }
+                
+                ventana.agregarPaseoATabla(
+                    paseo.getId(),
+                    paseo.getDestino(),
+                    paseo.getHoraPartida(),
+                    paseo.getHoraRegreso(),
+                    paseo.getPrecioBase(),
+                    paseo.getCantMaxBoletos(),
+                    paseo.getBoletos().length,
+                    montoRecaudado
+                );
+            }
         } catch (RemoteException e) {
             throw new Exception("Error al obtener paseos por disponibilidad: " + e.getMessage());
         }

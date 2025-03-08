@@ -66,7 +66,17 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         }
     }
 
-    public void registrarMinivan(VOMinivan minivan) throws EntidadYaExisteException {
+    public void registrarMinivan(VOMinivan minivan) throws EntidadYaExisteException, ArgumentoInvalidoException {
+        if (minivan.getMatricula().isEmpty() ||  minivan.getMatricula() == null) {
+            throw new ArgumentoInvalidoException("La matrícula de la minivan no puede estar vacía.");
+        }
+        if (this.minivans.get(minivan.getMatricula()) != null) {
+            throw new EntidadYaExisteException("Ya existe una minivan con matrícula " + minivan.getMatricula());
+        }
+        if (minivan.getCapacidad() <= 0) {
+            throw new ArgumentoInvalidoException("La capacidad de la minivan debe ser mayor que cero.");
+        }
+
         this.monitor.comienzoEscritura();
         try {
             this.minivans.insertarMinivan(minivan);
@@ -217,5 +227,32 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         }
         this.monitor.terminoLectura();
         return paseo.getBoletos().listarBoletos(comun, especiales);
+    }
+
+    public int calcularMontoRecaudadoPaseo(String paseoId) throws EntidadNoExisteException {
+        this.monitor.comienzoLectura();
+        
+        Paseo paseo = this.paseos.get(paseoId);
+        if (paseo == null) {
+            this.monitor.terminoLectura();
+            throw new EntidadNoExisteException("No existe un paseo con el código " + paseoId);
+        }
+
+        int montoTotal = 0;
+        int precioBase = paseo.getPrecioBase();
+
+        for (Boleto boleto : paseo.getBoletos()) {
+            if (boleto instanceof BoletoEspecial boletoEsp) {
+                // Para boletos especiales, aplicar el descuento específico
+                int precioConEdad = boleto.getP_edad() <= 18 ? (int)(precioBase * 0.75) : precioBase;
+                montoTotal += precioConEdad - boletoEsp.getDescuento();
+            } else {
+                // Para boletos normales, solo aplicar descuento por edad
+                montoTotal += boleto.getP_edad() <= 18 ? (int)(precioBase * 0.75) : precioBase;
+            }
+        }
+
+        this.monitor.terminoLectura();
+        return montoTotal;
     }
 }

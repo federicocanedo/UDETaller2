@@ -3,6 +3,7 @@ package src.cliente.grafica.paseos;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalTime;
 
 import src.logica.paseo.VOPaseo;
 
@@ -26,11 +27,20 @@ public class ListarPaseosVentana extends JFrame {
     private void inicializarVentana() {
         setTitle("Listado de Paseos");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 700);
+        setSize(1200, 700);
         setLocationRelativeTo(null);
 
         // Crear el modelo de la tabla
-        String[] columnas = {"ID", "Destino", "Hora Partida", "Hora Regreso", "Precio Base", "Cant. Max Boletos", "Boletos Disponibles"};
+        String[] columnas = {
+            "ID", 
+            "Destino", 
+            "Hora Partida", 
+            "Hora Regreso", 
+            "Precio Base", 
+            "Cant. Max Boletos", 
+            "Boletos Disponibles",
+            "Monto Recaudado"
+        };
         modeloTabla = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -148,9 +158,10 @@ public class ListarPaseosVentana extends JFrame {
         }
     }
 
-    public void mostrarPaseos(VOPaseo[] paseos) {
+    public void mostrarPaseos(VOPaseo[] paseos, int[] montosRecaudados) {
         modeloTabla.setRowCount(0);
-        for (VOPaseo paseo : paseos) {
+        for (int i = 0; i < paseos.length; i++) {
+            VOPaseo paseo = paseos[i];
             Object[] fila = new Object[] {
                 paseo.getId(),
                 paseo.getDestino(),
@@ -158,9 +169,31 @@ public class ListarPaseosVentana extends JFrame {
                 paseo.getHoraRegreso(),
                 paseo.getPrecioBase(),
                 paseo.getCantMaxBoletos(),
-                paseo.getCantMaxBoletos() - paseo.getBoletos().length
+                paseo.getCantMaxBoletos() - paseo.getBoletos().length,
+                "$" + montosRecaudados[i]
             };
             modeloTabla.addRow(fila);
         }
+    }
+
+    public void agregarPaseoATabla(String id, String destino, LocalTime horaPartida, 
+            LocalTime horaRegreso, int precioBase, int cantMaxBoletos, 
+            int boletosVendidos, int montoRecaudado) {
+        
+        Object[] fila = new Object[] {
+            id,
+            destino,
+            horaPartida,
+            horaRegreso,
+            precioBase,
+            cantMaxBoletos,
+            cantMaxBoletos - boletosVendidos,
+            "$" + montoRecaudado
+        };
+        modeloTabla.addRow(fila);
+    }
+
+    public void limpiarTabla() {
+        modeloTabla.setRowCount(0);
     }
 } 

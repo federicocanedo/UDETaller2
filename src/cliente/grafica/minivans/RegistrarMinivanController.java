@@ -48,16 +48,6 @@ public class RegistrarMinivanController {
         String modelo = ventana.getModelo();
         int asientos = ventana.getAsientos();
 
-        if (matricula.isEmpty() || marca.isEmpty() || modelo.isEmpty()) {
-            ventana.mostrarMensaje("Todos los campos son obligatorios.");
-            return;
-        }
-
-        if (asientos <= 0) { //todo pasar a fachada
-            ventana.mostrarMensaje("La cantidad de asientos debe ser mayor que cero.");
-            return;
-        }
-
         try {
             if (this.fachada == null) {
                 throw new SinConexionException();
