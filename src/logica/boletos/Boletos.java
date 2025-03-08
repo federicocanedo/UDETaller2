@@ -15,12 +15,33 @@ public class Boletos extends ArrayList<Boleto> {
     }
 
     public void agregarBoleto(VOBoleto boleto) {
-        boleto.setId(size() + 1);
+        VOBoleto boletoCopia;
         if (boleto instanceof VOBoletoEspecial) {
-            add(new BoletoEspecial((VOBoletoEspecial) boleto));
-            return;
+            VOBoletoEspecial boletoEsp = (VOBoletoEspecial) boleto;
+            boletoCopia = new VOBoletoEspecial(
+                boletoEsp.getP_nombre(),
+                boletoEsp.getP_edad(),
+                boletoEsp.getP_numCelular(),
+                boletoEsp.getDescuento()
+            );
+        } else {
+            boletoCopia = new VOBoleto(
+                boleto.getP_nombre(),
+                boleto.getP_edad(),
+                boleto.getP_numCelular()
+            );
         }
-        add(new Boleto(boleto));
+
+        // Asignar nuevo ID
+        int nuevoId = size() + 1;
+        boletoCopia.setId(nuevoId);
+        
+        // Crear y agregar el boleto
+        if (boletoCopia instanceof VOBoletoEspecial) {
+            add(new BoletoEspecial((VOBoletoEspecial) boletoCopia));
+        } else {
+            add(new Boleto(boletoCopia));
+        }
     }
 
     public VOBoleto[] listarBoletos(boolean comun, boolean especiales) {

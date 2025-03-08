@@ -60,7 +60,6 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
             this.minivans = respaldo.getMinivans();
             this.monitor.terminoEscritura();
         } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
             this.monitor.terminoLectura();
             throw e;
         }
@@ -141,6 +140,19 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
         this.monitor.terminoEscritura();
     }
 
+    public VOPaseo[] listarPaseos() {
+        this.monitor.comienzoLectura();
+        VOPaseo[] listadoPaseos = this.paseos.listarPaseos();
+        Arrays.sort(listadoPaseos, new Comparator<VOPaseo>() {
+            @Override
+            public int compare(VOPaseo p1, VOPaseo p2) {
+                return p1.getId().compareTo(p2.getId());
+            }
+        });
+        this.monitor.terminoLectura();
+        return listadoPaseos;
+    }
+
     public VOPaseo[] listarPaseosDeMinivan(String matricula) throws EntidadNoExisteException {
         this.monitor.comienzoLectura();
 
@@ -208,12 +220,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
             this.monitor.terminoEscritura();
             throw new ArgumentoInvalidoException("Se ha alcanzado la cantidad máxima de boletos para el paseo " + paseoId);
         }
-
-        if (boleto instanceof VOBoletoEspecial) {
-            paseo.getBoletos().add(new BoletoEspecial((VOBoletoEspecial) boleto));
-        } else {
-            paseo.getBoletos().add(new Boleto(boleto));
-        }
+        paseo.getBoletos().agregarBoleto(boleto);
 
         this.monitor.terminoEscritura();
     }

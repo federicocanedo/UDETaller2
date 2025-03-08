@@ -23,13 +23,15 @@ public interface IFachada extends Remote {
 
     void registrarPaseo(VOPaseo voPaseo) throws RemoteException, ArgumentoInvalidoException;
 
+    VOPaseo[] listarPaseos() throws RemoteException;
+
     VOPaseo[] listarPaseosDeMinivan(String matricula) throws RemoteException, EntidadNoExisteException;
 
     VOPaseo[] listarPaseosPorDestino(String destino) throws RemoteException;
 
     VOPaseo[] listarPaseosPorDisponibilidadBoletos(int cantidadBoletos) throws RemoteException;
 
-    public void venderBoleto(String paseoId, VOBoleto boleto) throws RemoteException, ArgumentoInvalidoException, EntidadNoExisteException;
+    void venderBoleto(String paseoId, VOBoleto boleto) throws RemoteException, ArgumentoInvalidoException, EntidadNoExisteException;
 
     VOBoleto[] listarBoletosDePaseo(String paseoId, boolean comun, boolean especiales) throws RemoteException, EntidadNoExisteException;
 

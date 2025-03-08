@@ -24,8 +24,8 @@ public class ListarBoletosVentana extends JFrame {
 
     private void inicializarVentana() {
         setTitle("Listado de Boletos");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(800, 400);
         setLocationRelativeTo(null);
 
         // Crear el modelo de la tabla
@@ -40,18 +40,17 @@ public class ListarBoletosVentana extends JFrame {
         // Crear la tabla
         tablaBoletos = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tablaBoletos);
-        scrollPane.setPreferredSize(new Dimension(750, 500));
 
         // Panel de filtros
         JPanel panelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT));
         
         // Campo para ID de paseo
-        txtPaseoId = new JTextField(10);
         JLabel lblPaseoId = new JLabel("ID Paseo:");
+        txtPaseoId = new JTextField(15);
         
         // Checkboxes para tipo de boleto
-        chkComunes = new JCheckBox("Comunes");
-        chkEspeciales = new JCheckBox("Especiales");
+        chkComunes = new JCheckBox("Mostrar Boletos Comunes");
+        chkEspeciales = new JCheckBox("Mostrar Boletos Especiales");
         chkComunes.setSelected(true);
         chkEspeciales.setSelected(true);
         
@@ -62,18 +61,22 @@ public class ListarBoletosVentana extends JFrame {
         panelFiltros.add(chkEspeciales);
         
         // Botón de actualizar
-        btnActualizar = new JButton("Actualizar Lista");
+        btnActualizar = new JButton("Buscar Boletos");
         btnActualizar.addActionListener(e -> actualizarLista());
 
+        // Panel para el botón
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBoton.add(btnActualizar);
+
         // Configurar el layout
-        Container contenedor = getContentPane();
-        contenedor.setLayout(new BorderLayout());
-        contenedor.add(panelFiltros, BorderLayout.NORTH);
-        contenedor.add(scrollPane, BorderLayout.CENTER);
-        contenedor.add(btnActualizar, BorderLayout.SOUTH);
-        
-        // Actualizar lista inicial
-        actualizarLista();
+        setLayout(new BorderLayout());
+        add(panelFiltros, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+        add(panelBoton, BorderLayout.SOUTH);
+
+        // Mostrar mensaje inicial
+        modeloTabla.setRowCount(0);
+        modeloTabla.addRow(new Object[]{"", "Ingrese un ID de paseo y presione Buscar Boletos", "", "", ""});
     }
 
     public void actualizarLista() {

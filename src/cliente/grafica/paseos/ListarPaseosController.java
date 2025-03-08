@@ -47,7 +47,7 @@ public class ListarPaseosController {
             throw new SinConexionException();
         }
         try {
-            VOPaseo[] paseos = this.fachada.listarPaseosPorDestino("");
+            VOPaseo[] paseos = this.fachada.listarPaseos();
             ventana.limpiarTabla();
             
             for (VOPaseo paseo : paseos) {

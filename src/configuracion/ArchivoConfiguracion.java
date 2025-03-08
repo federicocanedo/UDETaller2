@@ -1,4 +1,3 @@
-// ArchivoConfiguracion.java
 package src.configuracion;
 
 import java.io.FileInputStream;
