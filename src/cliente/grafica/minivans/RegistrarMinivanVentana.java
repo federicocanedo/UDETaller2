@@ -18,8 +18,8 @@ public class RegistrarMinivanVentana extends JFrame {
 
     private void inicializarVentana() {
         setTitle("Registrar Minivan");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(500, 300);
         setLocationRelativeTo(null);
 
         // Crear panel principal

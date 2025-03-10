@@ -26,7 +26,7 @@ public class ListarPaseosVentana extends JFrame {
 
     private void inicializarVentana() {
         setTitle("Listado de Paseos");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1200, 700);
         setLocationRelativeTo(null);
 

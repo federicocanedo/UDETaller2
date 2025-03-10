@@ -20,8 +20,8 @@ public class RegistrarPaseoVentana extends JFrame {
 
     private void inicializarVentana() {
         setTitle("Registrar Paseo");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(500, 300);
         setLocationRelativeTo(null);
 
         // Crear panel principal

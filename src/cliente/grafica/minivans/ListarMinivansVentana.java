@@ -18,7 +18,7 @@ public class ListarMinivansVentana extends JFrame {
 
     private void inicializarVentana() {
         setTitle("Listado de Minivans");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
 
