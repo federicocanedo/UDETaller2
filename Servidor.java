@@ -1,3 +1,5 @@
+import src.configuracion.ArchivoConfiguracion;
+import src.fachada.Fachada;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -10,11 +12,20 @@ public class Servidor {
     {
         try
         {
-            LocateRegistry.createRegistry(1099);
+            ArchivoConfiguracion config = ArchivoConfiguracion.getInstancia();
+            int puerto = Integer.parseInt(config.getPuertoServidor());
+            
+            LocateRegistry.createRegistry(puerto);
             Fachada fachada = new Fachada();
-            System.out.println ("Antes de publicarlo");
-            Naming.rebind("//localhost:1099/fachada", fachada);
-            System.out.println ("Luego de publicarlo");
+            
+            String rmiUrl = String.format("//%s:%s/%s",
+                    config.getIpServidor(),
+                    config.getPuertoServidor(),
+                    config.getNombreServidor());
+            
+            System.out.println("Publicando servicio RMI en: " + rmiUrl);
+            Naming.rebind(rmiUrl, fachada);
+            System.out.println("Servicio RMI publicado exitosamente");
         }
         catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();

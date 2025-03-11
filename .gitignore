@@ -18,6 +18,8 @@ local.properties
 .classpath
 .project
 
+.idea
+
 # External tool builders
 .externalToolBuilders/
 
@@ -230,3 +232,4 @@ fabric.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/jetbrains,java,eclipse,visualstudiocode
+/.idea/
