@@ -252,7 +252,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
             if (boleto instanceof BoletoEspecial boletoEsp) {
                 // Para boletos especiales, aplicar el descuento específico
                 int precioConEdad = boleto.getP_edad() <= 18 ? (int)(precioBase * 0.75) : precioBase;
-                montoTotal += precioConEdad - boletoEsp.getDescuento();
+                montoTotal += (int) (precioConEdad - (precioConEdad * boletoEsp.getDescuento()));
             } else {
                 // Para boletos normales, solo aplicar descuento por edad
                 montoTotal += boleto.getP_edad() <= 18 ? (int)(precioBase * 0.75) : precioBase;

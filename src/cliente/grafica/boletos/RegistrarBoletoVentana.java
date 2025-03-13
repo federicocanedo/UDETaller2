@@ -36,7 +36,7 @@ public class RegistrarBoletoVentana extends JFrame {
         // Paseo ID
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(new JLabel("Código de Paseo / Tour ID:"), gbc);
+        panel.add(new JLabel("Código de Paseo:"), gbc);
         gbc.gridx = 1;
         txtPaseoId = new JTextField(20);
         panel.add(txtPaseoId, gbc);
@@ -44,7 +44,7 @@ public class RegistrarBoletoVentana extends JFrame {
         // Nombre
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(new JLabel("Nombre / Name:"), gbc);
+        panel.add(new JLabel("Nombre:"), gbc);
         gbc.gridx = 1;
         txtNombre = new JTextField(20);
         panel.add(txtNombre, gbc);
@@ -52,7 +52,7 @@ public class RegistrarBoletoVentana extends JFrame {
         // Edad
         gbc.gridx = 0;
         gbc.gridy = 2;
-        panel.add(new JLabel("Edad / Age:"), gbc);
+        panel.add(new JLabel("Edad:"), gbc);
         gbc.gridx = 1;
         txtEdad = new JTextField(20);
         panel.add(txtEdad, gbc);
@@ -60,7 +60,7 @@ public class RegistrarBoletoVentana extends JFrame {
         // Celular
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(new JLabel("Celular / Phone:"), gbc);
+        panel.add(new JLabel("Celular:"), gbc);
         gbc.gridx = 1;
         txtCelular = new JTextField(20);
         panel.add(txtCelular, gbc);
@@ -69,14 +69,14 @@ public class RegistrarBoletoVentana extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
-        chkEspecial = new JCheckBox("Boleto Especial / Special Ticket");
+        chkEspecial = new JCheckBox("Boleto Especial");
         panel.add(chkEspecial, gbc);
 
         // Descuento
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
-        panel.add(new JLabel("Descuento / Discount:"), gbc);
+        panel.add(new JLabel("Descuento:"), gbc);
         gbc.gridx = 1;
         txtDescuento = new JTextField(20);
         txtDescuento.setEnabled(false);
@@ -84,8 +84,8 @@ public class RegistrarBoletoVentana extends JFrame {
 
         // Panel de botones
         JPanel buttonPanel = new JPanel();
-        btnRegistrar = new JButton("Registrar / Register");
-        btnCancelar = new JButton("Cancelar / Cancel");
+        btnRegistrar = new JButton("Registrar");
+        btnCancelar = new JButton("Cancelar");
         buttonPanel.add(btnRegistrar);
         buttonPanel.add(btnCancelar);
 
@@ -150,7 +150,7 @@ public class RegistrarBoletoVentana extends JFrame {
     }
 
     public void mostrarExito(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Éxito / Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void limpiarCampos() {
